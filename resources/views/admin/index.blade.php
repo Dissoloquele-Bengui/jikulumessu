@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="col-12">
                 <h2 class="h5 page-title">Dashboard</h2>
-                <p class="text-muted">Gestão de Hospital</p>
+                <p class="text-muted">Gestão de Campeonatos de Futebol</p>
                 <div class="row">
                     <div class="mb-4 col-md-6 col-xl-3">
                         <div class="shadow card">

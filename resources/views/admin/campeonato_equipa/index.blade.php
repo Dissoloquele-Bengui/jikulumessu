@@ -9,7 +9,7 @@
         <!-- Small table -->
         <div class="my-4 col-md-12">
             <h2 class="">
-              Lista dos  Equipas/Campeonatos
+              Lista das  Equipas/Campeonatos
             </h2>
           <div class="p-3 shadow card">
             <div class="card-body">
