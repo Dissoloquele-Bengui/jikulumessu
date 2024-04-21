@@ -37,15 +37,9 @@
     <nav class="vertnav navbar navbar-light">
 
         <div class="mb-4 w-100 d-flex">
-            <a class="mx-auto mt-2 text-center navbar-brand flex-fill" href="/">
+            <a class="mx-auto mt-2 text-center navbar-brand flex-fill" href="/dashboard">
                 <img class="imiage_de_menu" id="menuImage" src="" style="height:90px" alt="">
-            {{-- <svg version="1.1" id="logo" class="navbar-brand-img brand-sm" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 120 120" xml:space="preserve">
-                <g>
-                <polygon class="st0" points="78,105 15,105 24,87 87,87 	" />
-                <polygon class="st0" points="96,69 33,69 42,51 105,51 	" />
-                <polygon class="st0" points="78,33 15,33 24,15 87,15 	" />
-                </g>
-            </svg> --}}
+
             </a>
         </div>
         <ul class="mb-2 navbar-nav flex-fill w-100">
