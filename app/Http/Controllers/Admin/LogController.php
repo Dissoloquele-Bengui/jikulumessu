@@ -15,26 +15,6 @@ class LogController extends Controller
      */
     public function index()
     {
-        $data['restaurantes'] = Gestor::join('restaurantes', 'gestores.id_restaurante', 'restaurantes.id')
-            ->select('restaurantes.*')
-            ->where('id_usuario', Auth::user()->id)
-            ->get();
-
-        $usuarios = collect();
-
-        foreach ($data['restaurantes'] as $restaurante) {
-            $usuariosDoRestaurante = Gestor::join('users', 'gestores.id_usuario', 'users.id')
-                ->select('users.*')
-                ->where('id_restaurante', $restaurante->id)
-                ->get();
-            foreach($usuariosDoRestaurante as $usuario){
-                $usuario->id_restaurante = $data['restaurantes']->unique('id')->pluck('id')->toArray();
-            }
-            // Adicionar usuários do restaurante ao conjunto
-            $usuarios = $usuarios->merge($usuariosDoRestaurante)->unique('id');
-        }
-
-        $usuarios = $usuarios->values()->pluck('id')->toArray();
 
         if(!Auth::user()->nivel=="Administrador"){
             $data['logs']=Logs::join('users','logs.it_id_user','users.id')
