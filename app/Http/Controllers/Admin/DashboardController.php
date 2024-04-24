@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Campeonato;
 use App\Models\Compra;
+use App\Models\Equipa;
 use App\Models\Gestor;
 use App\Models\Restaurante;
 use Illuminate\Http\Request;
@@ -13,7 +15,14 @@ class DashboardController extends Controller
 {
 
     function dashboard(){
-        return view('admin.index');
+        $data['equipas']=Equipa::count();
+        $data['campeonatos']=Campeonato::count();
+        $data['meses'] = Equipa::select(
+            DB::raw('MONTHNAME(created_at) as mes'),
+        )
+        ->groupBy( 'mes')
+        ->get();
+        return view('admin.index',$data);
 
     }
     function graficos(){

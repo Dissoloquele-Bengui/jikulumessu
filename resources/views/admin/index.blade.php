@@ -19,7 +19,7 @@
                                     </div>
                                     <div class="col">
                                         <p class="mb-0 small text-muted">Campeonatos</p>
-                                        <span class="mb-0 h3">2</span>
+                                        <span class="mb-0 h3">{{$campeonatos}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                                     </div>
                                     <div class="pr-0 col">
                                         <p class="mb-0 small text-light">Equipas</p>
-                                        <span class="mb-0 text-white h3">1</span>
+                                        <span class="mb-0 text-white h3">{{$equipas}}</span>
                                     </div>
                                 </div>
                             </div>

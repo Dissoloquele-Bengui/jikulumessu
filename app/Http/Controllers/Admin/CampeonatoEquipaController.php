@@ -31,7 +31,7 @@ class CampeonatoEquipaController extends Controller
 
 
     public function index(){
-        
+
 
         $data['campeonato_equipas'] = CampeonatoEquipa::join('equipas','equipas.id','campeonato_equipas.id_equipa')
             ->join('campeonatos','campeonatos.id','campeonato_equipas.id_campeonato')
@@ -68,19 +68,24 @@ class CampeonatoEquipaController extends Controller
         ]);
         //dd($request);
         try{
+            if(CampeonatoEquipa::where('id_equipa',$request->id_equipa)
+                ->where('id_campeonato',$request->id_campeonato)
+                ->exists()){
+                    return redirect()->back()->with('campeonato_equipa.create.error',1);
+                }
             $campeonato_equipa=CampeonatoEquipa::create([
                 'id_equipa'=>$request->id_equipa,
-                'id_campeonato'=>$request->id_campeonato,               
+                'id_campeonato'=>$request->id_campeonato,
             ]);
 
             $this->loggerData(" Vinculou a equipa de id $request->id_equipa ao campeonato de id: $request->id_campeonato" );
 
-            return redirect()->back()->with('user.create.success',1);
+            return redirect()->back()->with('campeonato_equipa.create.success',1);
 
         } catch (\Throwable $th) {
             throw $th;
             //dd($th);
-            return redirect()->back()->with('user.create.error',1);
+            return redirect()->back()->with('campeonato_equipa.create.error',1);
         }
 
 
@@ -137,17 +142,17 @@ class CampeonatoEquipaController extends Controller
 
             CampeonatoEquipa::findOrFail($id)->update([
                 'id_equipa'=>$request->id_equipa,
-                'id_campeonato'=>$request->id_campeonato,     
+                'id_campeonato'=>$request->id_campeonato,
 
             ]);
 
             $this->loggerData("Editou o campeonato_equipa que possui o id $campeonato_equipa->id ");
 
-            return redirect()->back()->with('user.update.success',1);
+            return redirect()->back()->with('campeonato_equipa.update.success',1);
 
         } catch (\Throwable $th) {
 
-            return redirect()->back()->with('user.update.error',1);
+            return redirect()->back()->with('campeonato_equipa.update.error',1);
         }
     }
 
@@ -167,10 +172,10 @@ class CampeonatoEquipaController extends Controller
 
             CampeonatoEquipa::findOrFail($id)->delete();
             $this->loggerData(" Eliminou o campeonato_equipa  de id, ($campeonato_equipa->id)");
-            return redirect()->back()->with('user.destroy.success',1);
+            return redirect()->back()->with('campeonato_equipa.destroy.success',1);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('user.destroy.error',1);
+            return redirect()->back()->with('campeonato_equipa.destroy.error',1);
         }
     }
 
@@ -182,10 +187,10 @@ class CampeonatoEquipaController extends Controller
             $campeonato_equipa = CampeonatoEquipa::findOrFail($id);
             CampeonatoEquipa::findOrFail($id)->forceDelete();
             $this->loggerData("Purgou o campeonato_equipa  de id, campeonato_equipa $campeonato_equipa->name");
-            return redirect()->back()->with('user.purge.success',1);
+            return redirect()->back()->with('campeonato_equipa.purge.success',1);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('user.purge.error',1);
+            return redirect()->back()->with('campeonato_equipa.purge.error',1);
         }
     }
 
