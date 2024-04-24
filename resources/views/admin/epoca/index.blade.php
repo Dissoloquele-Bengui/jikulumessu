@@ -1,5 +1,5 @@
 @extends('layouts._includes.admin.body')
-@section('titulo', 'Listar Épocas')
+@section('titulo', 'Listar Jornadas')
 
 @section('conteudo')
 <div class="container-fluid">
@@ -9,7 +9,7 @@
         <!-- Small table -->
         <div class="my-4 col-md-12">
             <h2 class="">
-              Lista das  Épocas
+              Lista das  Jornadas
             </h2>
           <div class="p-3 shadow card">
             <div class="card-body">
@@ -56,7 +56,7 @@
                             <div class="modal-dialog modal-md" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">{{ __('Editar Época') }}</h4>
+                                        <h4 class="modal-title">{{ __('Editar Jornada') }}</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -92,7 +92,7 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">{{ __('Adicionar Época') }}</h4>
+                <h4 class="modal-title">{{ __('Adicionar Jornada') }}</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -114,7 +114,7 @@
 @if (session('epoca.destroy.success'))
     <script>
         Swal.fire(
-            'Época Eliminado com sucesso!',
+            'Jornada Eliminado com sucesso!',
             '',
             'success'
         )
@@ -123,7 +123,7 @@
 @if (session('epoca.destroy.error'))
     <script>
         Swal.fire(
-            'Erro ao Eliminar Época!',
+            'Erro ao Eliminar Jornada!',
             '',
             'error'
         )
@@ -132,7 +132,7 @@
 @if (session('epoca.purge.success'))
     <script>
         Swal.fire(
-            'Época Purgado com sucesso!',
+            'Jornada Purgado com sucesso!',
             '',
             'success'
         )
@@ -141,7 +141,7 @@
 @if (session('epoca.purge.error'))
     <script>
         Swal.fire(
-            'Erro ao Purgar Época!',
+            'Erro ao Purgar Jornada!',
             '',
             'error'
         )
@@ -150,7 +150,7 @@
 @if (session('epoca.create.success'))
     <script>
         Swal.fire(
-            'Época Cadastrado com sucesso!',
+            'Jornada Cadastrado com sucesso!',
             '',
             'success'
         )
@@ -159,7 +159,7 @@
 @if (session('epoca.create.error'))
     <script>
         Swal.fire(
-            'Erro ao Cadastrar Época!',
+            'Erro ao Cadastrar Jornada!',
             '',
             'error'
         )
@@ -168,7 +168,7 @@
 @if (session('epoca.update.success'))
     <script>
         Swal.fire(
-            'Época Actualizado com sucesso!',
+            'Jornada Actualizado com sucesso!',
             '',
             'success'
         )
@@ -177,7 +177,7 @@
 @if (session('epoca.update.error'))
     <script>
         Swal.fire(
-            'Erro ao Actualizar Época!',
+            'Erro ao Actualizar Jornada!',
             '',
             'error'
         )

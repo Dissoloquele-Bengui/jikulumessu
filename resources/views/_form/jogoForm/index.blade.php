@@ -14,7 +14,7 @@
     </div> <!-- /.col -->
     <div class="col-md-6">
         <div class="mb-3 form-group">
-            <label for="nome">Época*</label>
+            <label for="nome">Jornada*</label>
             <select name="id_epoca" id="id_epoca{{isset($jogo)?$jogo->id:''}}" class="form-control select2">
                 <option value="">Selecione uma opção</option>
                 @foreach($epocas as $epoca)

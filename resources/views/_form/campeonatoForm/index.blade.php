@@ -14,7 +14,7 @@
                 <option value="" >Selecione uma opção</option>
                 <option value="Liga" {{isset($campeonato)?$campeonato->tipo=="Liga"?'selected':'':''}}>Liga</option>
                 <option value="Copa" {{isset($campeonato)?$campeonato->tipo=="Copa"?'selected':'':''}}>Copa</option>
-                <option value="Mista" {{isset($campeonato)?$campeonato->tipo=="Mista"?'selected':'':''}}>Mista</option>
+                {{--<option value="Mista" {{isset($campeonato)?$campeonato->tipo=="Mista"?'selected':'':''}}>Mista</option>--}}
             </select>
         </div>
     </div> <!-- /.col -->

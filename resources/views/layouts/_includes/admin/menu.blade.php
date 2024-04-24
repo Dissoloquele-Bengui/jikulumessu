@@ -52,7 +52,7 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.campeonato_equipa.index') }}">
             <i class="fe fe-shield"></i>
-            <span class="ml-3 item-text">Campeonato/Equipa</span>
+            <span class="ml-3 item-text">Equipa/Campeonato</span>
         </a>
     </li>
     <li class="nav-item">
@@ -64,7 +64,7 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.epoca.index') }}">
             <i class="fe fe-calendar"></i>
-            <span class="ml-3 item-text">Época</span>
+            <span class="ml-3 item-text">Jornada</span>
         </a>
     </li>
     <li class="nav-item">
