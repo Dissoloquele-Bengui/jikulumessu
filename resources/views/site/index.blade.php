@@ -1,112 +1,156 @@
-@extends("layouts._includes.site.body")
-@section("titulo", "Página Inicial")
-@section("conteudo")
-    	<!-- hero area -->
-	<div class="hero-area hero-bg" style="background-image: url({{asset('assets/banner2.webp')}})">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-9 offset-lg-2 text-center">
-					<div class="hero-text">
-						<div class="hero-text-tablecell">
-							<p class="subtitle">Gestão de Campeonatos</p>
-							<h3 style="color:white">Gerencie seus campeonatos de futebol com facilidade.</h3>
-							<div class="hero-btns">
-								<a href="#"  class=" boxed-btn">Comece agora</a>
-								<a href="{{route('sgcf.site.sobre')}}" class="bordered-btn">Sobre Nós</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end hero area -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Jikulumesu </title>
+    <link rel="stylesheet" href="{{asset('home/home pictures/home.css')}}">
+    <script defer src="{{asset('home/home pictures/home.js')}}"></script>
+<!-- fonte -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-	<!-- features list section -->
-	<div class="list-section pt-80 pb-80">
-		<div class="container">
+</head>
 
-			<div class="row">
-				<div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-					<div class="list-box d-flex align-items-center">
-						<div class="list-icon">
-							<i class="fas fa-user-md"></i>
-						</div>
-						<div class="content">
-							<h3>Gestão de Equipes</h3>
-							<p>Gerencie suas equipes com eficiência!</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-					<div class="list-box d-flex align-items-center">
-						<div class="list-icon">
-							<i class="fas fa-phone-volume"></i>
-						</div>
-						<div class="content">
-							<h3>Suporte 24/7</h3>
-							<p>Obtenha suporte a qualquer hora</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<div class="list-box d-flex justify-content-start align-items-center">
-						<div class="list-icon">
-							<i class="fas fa-sync"></i>
-						</div>
-						<div class="content">
-							<h3>Atualizações em Tempo Real</h3>
-							<p>Receba atualizações instantâneas sobre seus campeonatos!</p>
-						</div>
-					</div>
-				</div>
-			</div>
+<body>
+    <div class="corpo">
+<!-- cabeçalho-->
+<header class="header">
+    <nav class="menu" style="justify-content: space-around !important">
+        <a href="/" class="Logo" >JIKULUMESU</a>
+        <button class="group"></button>
+        <ul class="listamenu">
+            @if(Auth::check() && in_array(Auth::user()->nivel,["Funcionário",'Administrador']))
+                <li><a href="/dashboard">Painel</a></li>
+                <li>          <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <a href="{{ route('logout') }}"   onclick="event.preventDefault();
+                this.closest('form').submit();">Terminar Sessão</a>
+          </form></li>
 
-		</div>
-	</div>
-	<!-- end features list section -->
+            @elseif(Auth::check())
+                <li><a href="{{route('sgv.site.login')}}">Consultar Localização</a></li>
+                <li>          <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <a href="{{ route('logout') }}"   onclick="event.preventDefault();
+                this.closest('form').submit();">Terminar Sessão</a>
+          </form></li>
+            @else
+                <li><a href="{{route('login')}}">Entrar</a></li>
+                <li><a href="{{route('sgv.site.localizar')}}">Localizar</a></li>
 
-	<!-- product section -->
-	<div class="product-section mt-150 mb-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 text-center">
-					<div class="section-title">
-						<h3><span class="orange-text">Nossos</span> Serviços de Gestão</h3>
-						<p>No nosso sistema de gestão de campeonatos de futebol, oferecemos uma plataforma completa para você administrar seus torneios de forma eficaz e organizada. Desde a gestão de equipes até a atualização em tempo real dos resultados, estamos aqui para simplificar sua vida como organizador.</p>
-					</div>
-				</div>
-			</div>
+            @endif
+        </ul>
+    </nav>
 
-			
-            
-		</div>
-	</div>
-	<!-- end product section -->
+</header>
+
+<!-- Conteúdo Principal (corpo da pag1)-->
+
+<!-- slide show+Slogan-->
+<div class="slideshow">
+
+    <div class="slidebutton">
+        <!--radio button-->
+<input type="radio" name="radiobtn" id="radio1">
+<input type="radio" name="radiobtn" id="radio2">
+<input type="radio" name="radiobtn" id="radio3">
+<input type="radio" name="radiobtn" id="radio4">
+<!--radiobutton done and start images-->
+
+<div class="slide first">
+<img src="{{asset('home/home pictures/teste.jpeg')}}" alt="imagem 1">
+</div>
+
+<div class="slide">
+<img src="{{asset('home/home pictures/teste1.jpeg')}}" alt="imagem 2">
+</div>
+
+<div class="slide">
+<img src="{{asset('home/home pictures/teste2.jpeg')}}" alt="imagem 3">
+</div>
+
+<div class="slide">
+<img src="{{asset('home/home pictures/teste3.jpeg')}}" alt="imagem 4">
+</div>
+        <!--images done-->
+
+        <!-- navegação nos slides-->
+        <div class="navegauto">
+            <div class="btnnaveg1"></div>
+            <div class="btnnaveg2"></div>
+            <div class="btnnaveg3"></div>
+            <div class="btnnaveg4"></div>
+        </div>
+    </div>
+    <div class="manualnaveg">
+        <label for="radio1" class="btnmanual"></label>
+        <label for="radio2" class="btnmanual"></label>
+        <label for="radio3" class="btnmanual"></label>
+        <label for="radio4" class="btnmanual"></label>
+    </div>
+
+</div>
+<!-- Slide show done-->
+
+<!-- apresentação do protótipo -->
+<div class="apresentação">
+
+<div class="imagem">
+<img src="{{asset('home/home pictures/alternativa.jpeg')}}" alt="ilustração">
+</div>
+
+<div class="imagem">
+<h1>texto</h1>
+<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vitae, est voluptates nihil repudiandae autem quas pariatur hic laudantium vero suscipit non quibusdam, ex velit aliquam vel consequatur repellat esse officiis.</p>
+</div>
+
+</div>
+
+<div class="presentation">
+
+
+    <div class="text">
+    <h1>texto</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident ipsa molestiae itaque autem! Earum voluptatem id aperiam nulla rem, ratione ipsum quo ipsam harum placeat ullam quas nostrum cumque. Fuga?</p>
+    </div>
+
+    <div class="text">
+    <img src="{{asset('home/home pictures/alternativa.jpeg')}}" alt="ilustração">
+    </div>
+
+    </div>
+<!-- Presentation -->
+  <main class="descrição">
+
+<div class="conteudo">
+    <h3>Desenvolvedoras</h3>
+</div>
+
+<div class="conteudo">
+    <h3>tracking cars</h3>
+</div>
+
+<div class="conteudo">
+<h3> tracking people</h3>
+</div>
+
+  </main>
 
 
 
-	<!-- advertisement section -->
-	<div class="abt-section mb-150">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 col-md-12">
-					<div class="abt-bg" >
-					</div>
-				</div>
-				<div class="col-lg-6 col-md-12">
-					<div class="abt-text">
-						<p class="top-sub">Desde 2024</p>
-						<h2><span class="orange-text">Gestão de Campeonatos</span></h2>
-						<p>Bem-vindo ao nosso sistema de gestão de campeonatos de futebol. Estamos aqui para simplificar sua vida como organizador, proporcionando ferramentas poderosas para gerenciar equipes, agendar jogos e manter seus torneios atualizados. Com nossa plataforma, você pode focar no que realmente importa: o jogo!</p>
-						<a href="{{route('sgcf.site.sobre')}}" class="boxed-btn mt-4">Saiba Mais...</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end advertisement section -->
-	<!-- end shop banner -->
+<!-- Rodapé -->
+<footer class="footer">
+   <ul class="footerlist">
+    <li> <a href="#">ITEL</a></li>
+    <li> <a href="#">CISP</a></li>
+    <li> <a href="#">POLÍCIA NACIONAL</a></li>
+   </ul>
+</footer>
 
 
-@endsection
+</div>
+</body>
+</html>

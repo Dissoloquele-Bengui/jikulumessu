@@ -8,13 +8,13 @@ use App\Models\Hospital;
 use App\Models\Logger;
 use App\Models\Medico;
 use App\Models\Equipa;
-use App\Models\Campeonato;
-use App\Models\CampeonatoEquipa;
+use App\Models\Carro;
+use App\Models\CarroEquipa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class CampeonatoEquipaController extends Controller
+class CarroEquipaController extends Controller
 {
     //
 
@@ -33,21 +33,21 @@ class CampeonatoEquipaController extends Controller
     public function index(){
 
 
-        $data['campeonato_equipas'] = CampeonatoEquipa::join('equipas','equipas.id','campeonato_equipas.id_equipa')
-            ->join('campeonatos','campeonatos.id','campeonato_equipas.id_campeonato')
-            ->select('campeonato_equipas.*','equipas.nome as equipa','campeonatos.nome as campeonato')
+        $data['carro_equipas'] = CarroEquipa::join('equipas','equipas.id','carro_equipas.id_equipa')
+            ->join('carros','carros.id','carro_equipas.id_carro')
+            ->select('carro_equipas.*','equipas.nome as equipa','carros.nome as carro')
             ->get();
         $data['equipas']=Equipa::all();
-        $data['campeonatos']=Campeonato::all();
-        $this->loggerData("Listou Equipas/Campeonato");
+        $data['carros']=Carro::all();
+        $this->loggerData("Listou Equipas/Carro");
 
-        return view('admin.campeonato_equipa.index', $data);
+        return view('admin.carro_equipa.index', $data);
 
     }
     public function create(){
 
 
-        return view('admin.campeonato_equipa.create.index');
+        return view('admin.carro_equipa.create.index');
     }
 
     /**
@@ -68,24 +68,24 @@ class CampeonatoEquipaController extends Controller
         ]);
         //dd($request);
         try{
-            if(CampeonatoEquipa::where('id_equipa',$request->id_equipa)
-                ->where('id_campeonato',$request->id_campeonato)
+            if(CarroEquipa::where('id_equipa',$request->id_equipa)
+                ->where('id_carro',$request->id_carro)
                 ->exists()){
-                    return redirect()->back()->with('campeonato_equipa.create.error',1);
+                    return redirect()->back()->with('carro_equipa.create.error',1);
                 }
-            $campeonato_equipa=CampeonatoEquipa::create([
+            $carro_equipa=CarroEquipa::create([
                 'id_equipa'=>$request->id_equipa,
-                'id_campeonato'=>$request->id_campeonato,
+                'id_carro'=>$request->id_carro,
             ]);
 
-            $this->loggerData(" Vinculou a equipa de id $request->id_equipa ao campeonato de id: $request->id_campeonato" );
+            $this->loggerData(" Vinculou a equipa de id $request->id_equipa ao carro de id: $request->id_carro" );
 
-            return redirect()->back()->with('campeonato_equipa.create.success',1);
+            return redirect()->back()->with('carro_equipa.create.success',1);
 
         } catch (\Throwable $th) {
             throw $th;
             //dd($th);
-            return redirect()->back()->with('campeonato_equipa.create.error',1);
+            return redirect()->back()->with('carro_equipa.create.error',1);
         }
 
 
@@ -106,9 +106,9 @@ class CampeonatoEquipaController extends Controller
     public function edit($id)
     {
         //
-        $data["campeonato_equipa"] = CampeonatoEquipa::find($id);
+        $data["carro_equipa"] = CarroEquipa::find($id);
 
-        return view('admin.campeonato_equipa.edit.index',$data);
+        return view('admin.carro_equipa.edit.index',$data);
     }
 
 
@@ -131,28 +131,28 @@ class CampeonatoEquipaController extends Controller
             'id_equipa'=>'required',
 
         ],[
-            'id_equipa.required'=>'A campeonato_equipa é um campo obrigatório',
+            'id_equipa.required'=>'A carro_equipa é um campo obrigatório',
 
         ]);
 
 
         try {
             //code...
-            $campeonato_equipa = CampeonatoEquipa::find($id);
+            $carro_equipa = CarroEquipa::find($id);
 
-            CampeonatoEquipa::findOrFail($id)->update([
+            CarroEquipa::findOrFail($id)->update([
                 'id_equipa'=>$request->id_equipa,
-                'id_campeonato'=>$request->id_campeonato,
+                'id_carro'=>$request->id_carro,
 
             ]);
 
-            $this->loggerData("Editou o campeonato_equipa que possui o id $campeonato_equipa->id ");
+            $this->loggerData("Editou o carro_equipa que possui o id $carro_equipa->id ");
 
-            return redirect()->back()->with('campeonato_equipa.update.success',1);
+            return redirect()->back()->with('carro_equipa.update.success',1);
 
         } catch (\Throwable $th) {
 
-            return redirect()->back()->with('campeonato_equipa.update.error',1);
+            return redirect()->back()->with('carro_equipa.update.error',1);
         }
     }
 
@@ -168,14 +168,14 @@ class CampeonatoEquipaController extends Controller
         //
         try {
             //code...
-            $campeonato_equipa =CampeonatoEquipa::findOrFail($id);
+            $carro_equipa =CarroEquipa::findOrFail($id);
 
-            CampeonatoEquipa::findOrFail($id)->delete();
-            $this->loggerData(" Eliminou o campeonato_equipa  de id, ($campeonato_equipa->id)");
-            return redirect()->back()->with('campeonato_equipa.destroy.success',1);
+            CarroEquipa::findOrFail($id)->delete();
+            $this->loggerData(" Eliminou o carro_equipa  de id, ($carro_equipa->id)");
+            return redirect()->back()->with('carro_equipa.destroy.success',1);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('campeonato_equipa.destroy.error',1);
+            return redirect()->back()->with('carro_equipa.destroy.error',1);
         }
     }
 
@@ -184,13 +184,13 @@ class CampeonatoEquipaController extends Controller
         //
         try {
             //code...
-            $campeonato_equipa = CampeonatoEquipa::findOrFail($id);
-            CampeonatoEquipa::findOrFail($id)->forceDelete();
-            $this->loggerData("Purgou o campeonato_equipa  de id, campeonato_equipa $campeonato_equipa->name");
-            return redirect()->back()->with('campeonato_equipa.purge.success',1);
+            $carro_equipa = CarroEquipa::findOrFail($id);
+            CarroEquipa::findOrFail($id)->forceDelete();
+            $this->loggerData("Purgou o carro_equipa  de id, carro_equipa $carro_equipa->name");
+            return redirect()->back()->with('carro_equipa.purge.success',1);
         } catch (\Throwable $th) {
             //throw $th;
-            return redirect()->back()->with('campeonato_equipa.purge.error',1);
+            return redirect()->back()->with('carro_equipa.purge.error',1);
         }
     }
 

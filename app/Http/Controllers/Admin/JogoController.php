@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Epoca;
-use App\Models\EpocaCampeonato;
+use App\Models\Empresa;
+use App\Models\EmpresaCarro;
 use App\Models\Logger;
 use App\Models\Jogador;
 use App\Models\Equipa;
 
 use App\Models\AssistenciasJogador;
 use App\Models\GolsJogador;
-use App\Models\Campeonato;
+use App\Models\Carro;
 use App\Models\Jogo;
-use App\Models\CampeonatoEquipa;
+use App\Models\CarroEquipa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -37,32 +37,32 @@ class JogoController extends Controller
     public function index(){
 
 
-        $data['jogos'] = Jogo::join('epocas','epocas.id','jogos.id_epoca')
-            ->select('jogos.*', 'epocas.nome as epoca')
+        $data['jogos'] = Jogo::join('empresas','empresas.id','jogos.id_empresa')
+            ->select('jogos.*', 'empresas.nome as empresa')
             ->get();
-        $data['equipas']=CampeonatoEquipa::join('equipas','equipas.id','campeonato_equipas.id_equipa')
-            ->join('campeonatos','campeonatos.id','campeonato_equipas.id_campeonato')
-            ->select('campeonato_equipas.*','equipas.nome as equipa','campeonatos.nome as campeonato')
+        $data['equipas']=CarroEquipa::join('equipas','equipas.id','carro_equipas.id_equipa')
+            ->join('carros','carros.id','carro_equipas.id_carro')
+            ->select('carro_equipas.*','equipas.nome as equipa','carros.nome as carro')
             ->get();
-        $data['epocas']= EpocaCampeonato::join('epocas','epocas.id','epoca_campeonatos.id_epoca')
-            ->select('epoca_campeonatos.*', 'epocas.nome')
+        $data['empresas']= EmpresaCarro::join('empresas','empresas.id','empresa_carros.id_empresa')
+            ->select('empresa_carros.*', 'empresas.nome')
             ->get();
-        $data['campeonatos']=Campeonato::all();
+        $data['carros']=Carro::all();
         $data['jogadores']=Jogador::all();
         $this->loggerData("Listou Jogos");
 
         return view('admin.jogo.index', $data);
 
     }
-    public function getDataByCampeonato(Request $request){
-        $data['epocas']= EpocaCampeonato::join('epocas','epocas.id','epoca_campeonatos.id_epoca')
-        ->select( 'epoca_campeonatos.*', 'epocas.nome')
-        ->where('epoca_campeonatos.id_campeonato',$request->id)
+    public function getDataByCarro(Request $request){
+        $data['empresas']= EmpresaCarro::join('empresas','empresas.id','empresa_carros.id_empresa')
+        ->select( 'empresa_carros.*', 'empresas.nome')
+        ->where('empresa_carros.id_carro',$request->id)
         ->get();
-        $data['equipas']=CampeonatoEquipa::join('equipas','equipas.id','campeonato_equipas.id_equipa')
-            ->join('campeonatos','campeonatos.id','campeonato_equipas.id_campeonato')
-            ->select('campeonato_equipas.*','equipas.nome as equipa','campeonatos.nome as campeonato')
-            ->where('campeonato_equipas.id_campeonato',$request->id)
+        $data['equipas']=CarroEquipa::join('equipas','equipas.id','carro_equipas.id_equipa')
+            ->join('carros','carros.id','carro_equipas.id_carro')
+            ->select('carro_equipas.*','equipas.nome as equipa','carros.nome as carro')
+            ->where('carro_equipas.id_carro',$request->id)
             ->get();
         return response()->json($data);
 
@@ -86,20 +86,20 @@ class JogoController extends Controller
 
        // dd($request);
         try{
-            if($request->id_campeonato_equipa_2==$request->id_campeonato_equipa_1){
+            if($request->id_carro_equipa_2==$request->id_carro_equipa_1){
                 return redirect()->back()->with('jogo.create.error',1);
             }
             $jogo=Jogo::create([
-                'id_campeonato_equipa_2'=>$request->id_campeonato_equipa_2,
-                'id_campeonato_equipa_1'=>$request->id_campeonato_equipa_1,
+                'id_carro_equipa_2'=>$request->id_carro_equipa_2,
+                'id_carro_equipa_1'=>$request->id_carro_equipa_1,
                 'hora_inicio'=>$request->hora_inicio,
                 'hora_termino'=>$request->hora_termino,
                 'dia'=>$request->dia,
-                'id_epoca'=>$request->id_epoca
+                'id_empresa'=>$request->id_empresa
 
             ]);
 
-            $this->loggerData(" Vinculou a equipa de id $request->id_equipa ao campeonato de id: $request->id_campeonato" );
+            $this->loggerData(" Vinculou a equipa de id $request->id_equipa ao carro de id: $request->id_carro" );
 
             return redirect()->back()->with('jogo.create.success',1);
 
@@ -134,45 +134,45 @@ class JogoController extends Controller
             if ($jogo->estado == 1 && ($resultado_anterior['gols_1'] != $request->gol_1 || $resultado_anterior['gols_2'] != $request->gol_2)) {
                 // Time 1 ganhava antes e agora empata ou perde
                 if ($resultado_anterior['gols_1'] > $resultado_anterior['gols_2'] && !($request->gol_1 > $request->gol_2)) {
-                    $total_1 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->first()->vitorias;
-                    $total_2 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->first()->derrotas;
+                    $total_1 = CarroEquipa::where('id', $jogo->id_carro_equipa_1)->first()->vitorias;
+                    $total_2 = CarroEquipa::where('id', $jogo->id_carro_equipa_2)->first()->derrotas;
 
                     // Subtrai apenas se o total não for zero
                     if ($total_1 > 0 && $total_2 > 0) {
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_1)->update([
                             'vitorias' => $total_1 - 1 // subtrai a vitória anterior
                         ]);
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_2)->update([
                             'derrotas' => $total_2 - 1 // subtrai a derrota anterior
                         ]);
                     }
                 }
                 // Time 2 ganhava antes e agora empata ou perde
                 elseif ($resultado_anterior['gols_2'] > $resultado_anterior['gols_1'] && !($request->gol_1 > $request->gol_2)) {
-                    $total_1 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->first()->derrotas;
-                    $total_2 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->first()->vitorias;
+                    $total_1 = CarroEquipa::where('id', $jogo->id_carro_equipa_1)->first()->derrotas;
+                    $total_2 = CarroEquipa::where('id', $jogo->id_carro_equipa_2)->first()->vitorias;
 
                     // Subtrai apenas se o total não for zero
                     if ($total_1 > 0 && $total_2 > 0) {
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_2)->update([
                             'vitorias' => $total_2 - 1 // subtrai a vitória anterior
                         ]);
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_1)->update([
                             'derrotas' => $total_1 - 1 // subtrai a derrota anterior
                         ]);
                     }
                 }
                 // Empate anterior e agora não é mais um empate
                 elseif ($resultado_anterior['gols_1'] == $resultado_anterior['gols_2'] && !($request->gol_1 == $request->gol_2)) {
-                    $total_1 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->first()->empates;
-                    $total_2 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->first()->empates;
+                    $total_1 = CarroEquipa::where('id', $jogo->id_carro_equipa_1)->first()->empates;
+                    $total_2 = CarroEquipa::where('id', $jogo->id_carro_equipa_2)->first()->empates;
 
                     // Subtrai apenas se o total não for zero
                     if ($total_1 > 0 && $total_2 > 0) {
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_1)->update([
                             'empates' => $total_1 - 1 // subtrai o empate anterior
                         ]);
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_2)->update([
                             'empates' => $total_2 - 1 // subtrai o empate anterior
                         ]);
                     }
@@ -183,45 +183,45 @@ class JogoController extends Controller
             if ($jogo->estado == 1 && ($resultado_anterior['gols_1'] != $request->gol_1 || $resultado_anterior['gols_2'] != $request->gol_2)) {
                 // Time 1 ganhava antes e agora empata ou perde
                 if ($resultado_anterior['gols_1'] > $resultado_anterior['gols_2'] && !($request->gol_1 > $request->gol_2)) {
-                    $total_1 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->first()->vitorias;
-                    $total_2 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->first()->derrotas;
+                    $total_1 = CarroEquipa::where('id', $jogo->id_carro_equipa_1)->first()->vitorias;
+                    $total_2 = CarroEquipa::where('id', $jogo->id_carro_equipa_2)->first()->derrotas;
 
                     // Subtrai apenas se o total não for zero
                     if ($total_1 > 0 && $total_2 > 0) {
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_1)->update([
                             'vitorias' => $total_1 - 1 // subtrai a vitória anterior
                         ]);
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_2)->update([
                             'derrotas' => $total_2 - 1 // subtrai a derrota anterior
                         ]);
                     }
                 }
                 // Time 2 ganhava antes e agora empata ou perde
                 elseif ($resultado_anterior['gols_2'] > $resultado_anterior['gols_1'] && !($request->gol_1 > $request->gol_2)) {
-                    $total_1 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->first()->derrotas;
-                    $total_2 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->first()->vitorias;
+                    $total_1 = CarroEquipa::where('id', $jogo->id_carro_equipa_1)->first()->derrotas;
+                    $total_2 = CarroEquipa::where('id', $jogo->id_carro_equipa_2)->first()->vitorias;
 
                     // Subtrai apenas se o total não for zero
                     if ($total_1 > 0 && $total_2 > 0) {
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_2)->update([
                             'vitorias' => $total_2 - 1 // subtrai a vitória anterior
                         ]);
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_1)->update([
                             'derrotas' => $total_1 - 1 // subtrai a derrota anterior
                         ]);
                     }
                 }
                 // Empate anterior e agora não é mais um empate
                 elseif ($resultado_anterior['gols_1'] == $resultado_anterior['gols_2'] && !($request->gol_1 == $request->gol_2)) {
-                    $total_1 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->first()->empates;
-                    $total_2 = CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->first()->empates;
+                    $total_1 = CarroEquipa::where('id', $jogo->id_carro_equipa_1)->first()->empates;
+                    $total_2 = CarroEquipa::where('id', $jogo->id_carro_equipa_2)->first()->empates;
 
                     // Subtrai apenas se o total não for zero
                     if ($total_1 > 0 && $total_2 > 0) {
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_1)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_1)->update([
                             'empates' => $total_1 - 1 // subtrai o empate anterior
                         ]);
-                        CampeonatoEquipa::where('id', $jogo->id_campeonato_equipa_2)->update([
+                        CarroEquipa::where('id', $jogo->id_carro_equipa_2)->update([
                             'empates' => $total_2 - 1 // subtrai o empate anterior
                         ]);
                     }
@@ -229,32 +229,32 @@ class JogoController extends Controller
             }
             //Atualização do resultado do Jogo
             if($request->gol_1 > $request->gol_2 && !($resultado_anterior['gols_2'] >= $resultado_anterior['gols_1'])){
-                //dd(CampeonatoEquipa::all());
-               $total_1 =  CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_1)->first()->vitorias;
-               $total_2 =  CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_2)->first()->derrotas;
-                CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_1)->update([
+                //dd(CarroEquipa::all());
+               $total_1 =  CarroEquipa::where('id',$jogo->id_carro_equipa_1)->first()->vitorias;
+               $total_2 =  CarroEquipa::where('id',$jogo->id_carro_equipa_2)->first()->derrotas;
+                CarroEquipa::where('id',$jogo->id_carro_equipa_1)->update([
                     'vitorias'=>$total_1+1
                 ]);
-                CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_2)->update([
+                CarroEquipa::where('id',$jogo->id_carro_equipa_2)->update([
                     'derrotas'=>$total_2+1
                 ]);
             }else if($request->gol_2 > $request->gol_1 && !($resultado_anterior['gols_1'] >= $resultado_anterior['gols_2'])){
                 //dd("foi");
-                $total_1 =  CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_1)->first()->derrotas;
-                $total_2 =  CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_2)->first()->vitorias;
-                 CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_2)->update([
+                $total_1 =  CarroEquipa::where('id',$jogo->id_carro_equipa_1)->first()->derrotas;
+                $total_2 =  CarroEquipa::where('id',$jogo->id_carro_equipa_2)->first()->vitorias;
+                 CarroEquipa::where('id',$jogo->id_carro_equipa_2)->update([
                      'vitorias'=>$total_2+1
                  ]);
-                 CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_1)->update([
+                 CarroEquipa::where('id',$jogo->id_carro_equipa_1)->update([
                      'derrotas'=>$total_1+1
                  ]);
             }else if($request->gol_2 == $request->gol_1 && ($resultado_anterior['gols_2'] != $resultado_anterior['gols_1'])){
-                $total_1 =  CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_1)->first()->empates;
-                $total_2 =  CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_2)->first()->empates;
-                CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_2)->update([
+                $total_1 =  CarroEquipa::where('id',$jogo->id_carro_equipa_1)->first()->empates;
+                $total_2 =  CarroEquipa::where('id',$jogo->id_carro_equipa_2)->first()->empates;
+                CarroEquipa::where('id',$jogo->id_carro_equipa_2)->update([
                     'empates'=>$total_2+1
                 ]);
-                CampeonatoEquipa::where('id',$jogo->id_campeonato_equipa_1)->update([
+                CarroEquipa::where('id',$jogo->id_carro_equipa_1)->update([
                     'empates'=>$total_1+1
                 ]);
             }
@@ -335,7 +335,7 @@ class JogoController extends Controller
     }
     public function add_gol_field(Request $request){
         $jogo = Jogo::findOrFail($request->id);
-        $equipas = CampeonatoEquipa::whereIn('id',[$jogo->id_campeonato_equipa_1,$jogo->id_campeonato_equipa_2])
+        $equipas = CarroEquipa::whereIn('id',[$jogo->id_carro_equipa_1,$jogo->id_carro_equipa_2])
         ->get();
         $equipas = $equipas
             ->pluck('id_equipa')
@@ -363,14 +363,14 @@ class JogoController extends Controller
     {
         //
         $data["jogo"] = Jogo::find($id);
-        $data['equipas']=CampeonatoEquipa::join('equipas','equipas.id','campeonato_equipas.id_equipa')
-            ->join('campeonatos','campeonatos.id','campeonato_equipas.id_campeonato')
-            ->select('campeonato_equipas.*','equipas.nome as equipa','campeonatos.nome as campeonato')
+        $data['equipas']=CarroEquipa::join('equipas','equipas.id','carro_equipas.id_equipa')
+            ->join('carros','carros.id','carro_equipas.id_carro')
+            ->select('carro_equipas.*','equipas.nome as equipa','carros.nome as carro')
             ->get();
-        $data['epocas']= EpocaCampeonato::join('epocas','epocas.id','epoca_campeonatos.id_epoca')
-            ->select('epoca_campeonatos.*', 'epocas.nome')
+        $data['empresas']= EmpresaCarro::join('empresas','empresas.id','empresa_carros.id_empresa')
+            ->select('empresa_carros.*', 'empresas.nome')
             ->get();
-        $data['campeonatos']=Campeonato::all();
+        $data['carros']=Carro::all();
         $data['jogadores']=Jogador::all();
         return view('admin.jogo.edit.index',$data);
     }
@@ -405,8 +405,8 @@ class JogoController extends Controller
             $jogo = Jogo::find($id);
 
             Jogo::findOrFail($id)->update([
-                'id_campeonato_equipa_2'=>$request->id_campeonato_equipa_2,
-                'id_campeonato_equipa_1'=>$request->id_campeonato_equipa_1,
+                'id_carro_equipa_2'=>$request->id_carro_equipa_2,
+                'id_carro_equipa_1'=>$request->id_carro_equipa_1,
                 'hora_inicio'=>$request->hora_inicio,
                 'hora_termino'=>$request->hora_termino,
                 'dia'=>$request->dia,

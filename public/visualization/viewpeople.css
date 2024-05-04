@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body{
+    min-height: 100vh;
+    background: #fff;
+ }
+
+
+ /*corpito*/
+.dados{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: antiquewhite;
+}
+
+.veiculos{
+    width: 20%;
+    height: 70px;
+    background-color: #fff;
+}
+
+.geral{
+    width: 100%;
+    height: 600px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+}
+.mapa {
+    height: 500px; /* Define a altura do mapa */ 
+    width: 70%; 
+}
+
+.coordenadas{
+    width: 30%;
+    height: 500px;
+    background-color: #0c08ec;
+}

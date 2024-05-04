@@ -6,6 +6,7 @@ use App\Models\Horario;
 use App\Models\TipoConsulta;
 use App\Models\User;
 use App\Models\AssistenciasJogador;
+use App\Models\Contacto;
 use App\Models\GolsJogador;
 use App\Models\EstadoNotificacao;
 use App\Models\Medico;
@@ -72,5 +73,10 @@ function minhasNotificacoes(){
         $data['not_view']=[];
     }
     return isset($data)?$data:[];
+}
+function contacto($id){
+    return Contacto::where('id_user',$id)
+        ->pluck('numero')
+        ->toArray();
 }
 ?>

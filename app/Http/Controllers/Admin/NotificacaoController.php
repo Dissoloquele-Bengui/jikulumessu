@@ -33,7 +33,7 @@ class NotificacaoController extends Controller
     }
 
     public function index(){
-        if(Auth::user()->tipo=="Professor"){
+        if(Auth::user()->nivel=="Professor"){
             $professor = Professor::where('user_id',Auth::id())->first();
             $data['turmas'] = TurmaProfessor::where('professor_id',$professor->id)
             ->join('turmas','turma_professors.turma_id','turmas.id')

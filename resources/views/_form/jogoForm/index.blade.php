@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-md-6">
         <div class="mb-3 form-group">
-            <label for="nome">Campeonato*</label>
-            <select name="id_campeonato" onchange="{{isset($jogo)?'change_team_fields_update('.$jogo->id.')':'change_team_fields()'}}" id="id_campeonato{{isset($jogo)?$jogo->id:''}}" class="form-control select2">
+            <label for="nome">Carro*</label>
+            <select name="id_carro" onchange="{{isset($jogo)?'change_team_fields_update('.$jogo->id.')':'change_team_fields()'}}" id="id_carro{{isset($jogo)?$jogo->id:''}}" class="form-control select2">
                 <option value="">Selecione uma opção</option>
-                @foreach($campeonatos as $campeonato)
-                    <option value="{{$campeonato->id}}" {{isset($jogo)?$jogo->id_campeonato==$campeonato->id?'selected':'':''}}>
-                        {{$campeonato->nome}}
+                @foreach($carros as $carro)
+                    <option value="{{$carro->id}}" {{isset($jogo)?$jogo->id_carro==$carro->id?'selected':'':''}}>
+                        {{$carro->nome}}
                     </option>
                 @endforeach
             </select>
@@ -14,12 +14,12 @@
     </div> <!-- /.col -->
     <div class="col-md-6">
         <div class="mb-3 form-group">
-            <label for="nome">Jornada*</label>
-            <select name="id_epoca" id="id_epoca{{isset($jogo)?$jogo->id:''}}" class="form-control select2">
+            <label for="nome">Empresa*</label>
+            <select name="id_empresa" id="id_empresa{{isset($jogo)?$jogo->id:''}}" class="form-control select2">
                 <option value="">Selecione uma opção</option>
-                @foreach($epocas as $epoca)
-                    <option value="{{$epoca->id}}" {{isset($jogo)?$jogo->id_epoca==$epoca->id?'selected':'':''}}>
-                       Fase  {{$epoca->nome}}
+                @foreach($empresas as $empresa)
+                    <option value="{{$empresa->id}}" {{isset($jogo)?$jogo->id_empresa==$empresa->id?'selected':'':''}}>
+                       Fase  {{$empresa->nome}}
                     </option>
                 @endforeach
             </select>
@@ -27,10 +27,10 @@
     </div> <!-- /.col -->
     <div class="col-md-6 id_equipa{{isset($jogo)?$jogo->id:''}}" >
         <div class="mb-3 form-group">
-            <label for="id_campeonato_equipa_1">Equipa de Casa*</label>
-            <select name="id_campeonato_equipa_1" id="id_campeonato_equipa_1{{isset($jogo)?$jogo->id:''}}" class="form-control select2">
+            <label for="id_carro_equipa_1">Equipa de Casa*</label>
+            <select name="id_carro_equipa_1" id="id_carro_equipa_1{{isset($jogo)?$jogo->id:''}}" class="form-control select2">
                 @foreach($equipas as $equipa)
-                    <option value="{{$equipa->id}}" {{isset($jogo)?$jogo->id_campeonato_equipa_1==$equipa->id?'selected':'':''}}>
+                    <option value="{{$equipa->id}}" {{isset($jogo)?$jogo->id_carro_equipa_1==$equipa->id?'selected':'':''}}>
                         {{$equipa->equipa}}
                     </option>
                 @endforeach
@@ -39,10 +39,10 @@
     </div> <!-- /.col -->
     <div class="col-md-6 id_equipa">
         <div class="mb-3 form-group">
-            <label for="id_campeonato_equipa_2">Equipa Visitante*</label>
-            <select name="id_campeonato_equipa_2" id="id_campeonato_equipa_2{{isset($jogo)?$jogo->id:''}}" class="form-control select2">
+            <label for="id_carro_equipa_2">Equipa Visitante*</label>
+            <select name="id_carro_equipa_2" id="id_carro_equipa_2{{isset($jogo)?$jogo->id:''}}" class="form-control select2">
                 @foreach($equipas as $equipa)
-                    <option value="{{$equipa->id}}" {{isset($jogo)?$jogo->id_campeonato_equipa_2==$equipa->id?'selected':'':''}}>
+                    <option value="{{$equipa->id}}" {{isset($jogo)?$jogo->id_carro_equipa_2==$equipa->id?'selected':'':''}}>
                         {{$equipa->equipa}}
                     </option>
                 @endforeach

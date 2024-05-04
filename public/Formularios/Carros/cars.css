@@ -1,0 +1,330 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body, input{
+    font-family: 'Poppins', sans-serif;
+}
+
+.base{
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: white;
+    overflow: hidden;
+}
+
+/*design do mundo*/
+.base:before{
+    content: '';
+    position: absolute;
+    width: 2000px;
+    height: 2000px;
+    border-radius: 50%;
+    background: linear-gradient(-45deg, #0c08ec, #04befe);
+    top: -10%;
+    right: 48%;
+    transform: translateY(-50%);
+    z-index: 6;
+    transition: 1.8s ease-in-out;
+}
+/*done design */
+
+.baseforms{
+    position: absolute;
+    width: 100% ;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+/*coisas do mundo*/
+/*ligação dos forms*/
+.logincad{
+position: absolute;
+top: 50%;
+left: 75%;
+transform: translate(-50%,-50%);
+width: 50%;
+display: grid;
+grid-template-columns: 1fr;
+z-index: 5;  
+transition: 1s 0.7s ease-in-out;  
+}
+/*end coisas do mundo*/
+form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction:column ;
+    padding: 0 5rem;
+    overflow: hidden;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    transition: 0.2s 0.7s ease-in-out;
+}
+
+form.loginform{
+z-index:2;
+}
+
+form.cadform{
+    z-index:1;
+    opacity:0 ;
+    }
+
+.titulo{
+    font-size: 2.2rem;
+    color:#444;
+    margin-bottom: 10px;
+}
+
+.campodeentrada{
+    max-width: 380px;
+    width: 100%;
+    height: 55px;
+    background-color: #f0f0f0;
+    margin: 10px;
+    border-radius: 55px;
+    display: grid;
+    grid-template-columns: 15% 85%;
+    padding: 0.4rem;
+}
+
+.campodeentrada i{
+    text-align: center ;
+    line-height: 55px;
+    color: #acacac;
+    font-size:  1.1em; ;
+}
+
+.campodeentrada input{
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333
+}
+
+
+.campodeentrada input::placeholder{
+    color: #aaa;
+    font-weight: 500;
+}
+
+.btn{
+    width: 150px;
+    height: 40px;
+    border: none;
+    outline:none;
+    border-radius: 50px;
+    cursor: pointer;
+    background-color: #0c08ec;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 10px 0;
+    transition: 0.5s;
+}
+
+.btn:hover{
+    background-color: #2b64ff ;
+}
+ 
+/*imagens*/
+
+.paineis{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.painel{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-around;
+    text-align: center;
+    z-index: 7;
+}
+
+.painelesquerdo{
+    pointer-events: all;
+padding: 3rem 17% 2rem 12%;
+}
+
+.paineldireito{
+    pointer-events: none;
+    padding: 3rem 12% 2rem 17%;
+    }
+
+    .painel .conteudo{
+        color: #fff;
+        transition: 0.9s 0.6s ease-in-out;
+    }
+
+    .painel h3{
+        font-weight: 600;
+        line-height: 1;
+        font-size: 1.5rem;
+    }
+
+.uncolor{
+margin: 0;
+background: none;
+border: 2px solid #fff;
+width: 130px;
+height: 41px;
+font-weight: 600;
+font-size: 0.8rem;
+border-radius: 55px;
+cursor: pointer;
+color: #fff;
+    }
+
+.imagem{
+    width: 100%;
+    transition: 1.1s 0.4s ease-in-out;
+}
+
+.paineldireito .conteudo, .paineldireito .imagem{
+transform: translateX(800px);
+}
+
+/* o benga */
+
+.base.Modo-Cadastro::before{
+    transform: translate(100%, -50%);
+    right: 52%;
+}
+
+.base.Modo-Cadastro .painelesquerdo .imagem,
+.base.Modo-Cadastro .painelesquerdo .conteudo{
+    transform: translateX(-800px);
+}
+
+.base.Modo-Cadastro .paineldireito .conteudo, 
+.base.Modo-Cadastro .paineldireito .imagem{
+    transform: translateX(0px);
+}
+
+.base.Modo-Cadastro .painelesquerdo{
+    pointer-events: none;
+}
+
+.base.Modo-Cadastro .paineldireito{
+    pointer-events: all;
+}
+
+.base.Modo-Cadastro .logincad{
+    left: 20%;
+}
+
+.base.Modo-Cadastro form.loginform{
+    z-index: 1;
+    opacity: 0;
+}
+
+.base.Modo-Cadastro form.cadform{
+    z-index: 2;
+    opacity: 1;
+}
+/*benga end*/
+
+/*responsividade da coisa*/
+
+@media (max-width:870px){
+.base{
+    min-height: 800px;
+    height: 100vh;
+}
+.base:before{
+    width: 1500px;
+    height: 1500px;
+    left: 30%;
+    bottom: 68%;
+    transform: translateX(-50%);
+    right: initial;
+    top: initial;
+    transition: 2s ease-in-out;
+}
+.logincad{
+    width: 100%;
+    left: 50%;
+    top: 95%;
+    transform: translate(-50%, -100%);
+    transition: 1s 0.8s ease-in-out;
+}
+
+.paineis-base{
+    z-index: 10;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
+}
+
+.painel{
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2.5rem 8%;
+}
+
+.painel .conteudo{
+    padding-right: 15%;
+    transition: 0.9s 0.8 ease-in-out;
+}
+
+.painel h3{
+font-size: 1.2rem;
+}
+
+    .btn .uncolor{
+width: 110px;
+height: 35px;
+font-size: 0.7rem;
+    }
+
+.imagem{
+    width: 200px;
+    transition: 0.9s 0.6 ease-in-out;
+}
+
+.painelesquerdo{
+    grid-row: 1/2;
+}
+
+.paineldireito{
+    grid-row: 3/4;
+}
+
+.paineldireito .conteudo, .paineldireito .imagem{
+    transform: translateY(300px);
+}
+
+.base.base.Modo-Cadastro:before{
+    transform: translate(-50%, 100%);
+    bottom:32%;
+    right: initial;
+}
+
+.base.Modo-Cadastro .painelesquerdo .imagem,
+.base.Modo-Cadastro .painelesquerdo .conteudo{
+    transform: translateY(-300px);
+}
+
+.base.Modo-Cadastro .logincad{
+top: 5%;
+transform: translate(-50%, 0);
+left: 50%;
+}
+}

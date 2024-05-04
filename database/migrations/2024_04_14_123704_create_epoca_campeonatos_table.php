@@ -11,17 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('epoca_campeonatos', function (Blueprint $table) {
+        Schema::create('empresa_carros', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_campeonato');
-            $table->unsignedBigInteger('id_epoca');
-            $table->foreign('id_campeonato')
+            $table->unsignedBigInteger('id_carro');
+            $table->unsignedBigInteger('id_empresa');
+            $table->foreign('id_empresa')
                 ->references('id')
-                ->on('campeonatos')
-                ->onDelete('cascade');
-            $table->foreign('id_epoca')
-                ->references('id')
-                ->on('epocas')
+                ->on('empresas')
                 ->onDelete('cascade');
             $table->timestamps();
         });
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('epoca_campeonatos');
+        Schema::dropIfExists('empresa_carros');
     }
 };

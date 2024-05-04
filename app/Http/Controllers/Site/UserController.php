@@ -46,35 +46,6 @@ class UserController extends Controller
         }
 
     }
-    public function faturas(){
-        $data['faturas']=Fatura::where('id_usuario',Auth::id())->get();
-        return view('site.facturas',$data);
-    }
-    public function fatura($id){
-        $fatura=Fatura::join('users','faturas.id_usuario','users.id')
-            ->select('faturas.*','faturas.id as fatura_id','users.*')
-            ->where('faturas.id',$id)
-            ->first();
-
-        $data['fatura']=$fatura;
-
-        $data['pratos']=Compra::join('pratos','compras.id_prato','pratos.id')
-            ->select('pratos.*','compras.valor as valor','compras.qtd as quantidade')
-            ->where('id_fatura',$id)
-            ->get();
-        $data['fatura']->valor_total=$data['pratos']->sum('valor');
-        //dd($data['pratos']);
-
-
-        $html = view("site/fatura",$data);
-        //dd($html);
-        $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4-P']);
-        $mpdf->SetFont("arial");
-        $mpdf->setHeader();
-        $mpdf->AddPage();
-        $mpdf->WriteHTML($html);
-        $mpdf->Output("Fatura Nº".$fatura->id."/2024" . ".pdf", "I");
-    }
     public function upload( $file){
 
         $nomeFile = uniqid() . '.' . $file->getClientOriginalExtension();
@@ -83,5 +54,11 @@ class UserController extends Controller
         $file->move($caminhoFile, $nomeFile);
         return "docs/users/imagens/".$nomeFile;
 
+    }
+    public function getEmail(Request $request){
+        $user = User::select('users.email')
+        ->where('users.id',$request->processo)
+        ->first();
+        return response()->json($user->email);
     }
 }

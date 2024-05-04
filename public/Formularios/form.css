@@ -1,0 +1,86 @@
+
+/*Login Page*/
+.base{
+    background: #fff;
+    background-size: cover;
+    display: flex;
+    height: 700px;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+}
+.teste{
+    border-radius: 50%;
+    width: 1000px;
+    height: 500px;
+    display: flex;
+}
+
+.calltoaction{
+    width: 600px;
+    height: 500px;
+    text-align: center;
+    align-items: center;
+    background: url('Untitled\ design.png');
+    border-left: 10Px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+img{
+   height: 30%;
+   width: 30%;
+   margin-top: 15%;
+}
+
+.tc{
+    color: white;
+}
+
+h2{
+    font-size: 40px;
+}
+
+.entradas{
+width: 400px;
+background-color: rgba(3, 27, 242, 0.5); 
+height: 500px;
+border-top-right-radius: 10px;
+border-bottom-right-radius: 10px;
+}
+
+.pe{
+    color: #000;  
+    font-size: 30px;  
+}
+
+.pessoas{
+    width: 100%;
+    height: 50%;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.carros{
+    width: 100%;
+    height: 50%;
+    text-align: center;
+}
+
+.login{
+    text-decoration: none;
+    border-radius: 30px;
+    border-color: blue;
+    background-color: blue;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.login {
+    color: black;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+}

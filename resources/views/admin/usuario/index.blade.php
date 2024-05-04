@@ -114,6 +114,161 @@
         </div>
     </div>
 </div>
+<script>
+    function addFieldUser(){
+       let option =  $('#nivel').val();
+       $('#fieldUser').html('');
+       // alert(option);
+       if(option == "Funcionário"){
+            $('#fieldUser').append(`
+                <div class="col-md-12">
+                    <div class="mb-3 form-group">
+                        <label for="id_empresa">empresa*</label>
+                        <select name="id_empresa" id="" class="form-control select2">
+                            @foreach($empresas as $empresa)
+                                <option value="{{$empresa->id}}" >
+                                    {{$empresa->nome}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div> <!-- /.col -->
+            `);
+       }else if(option === "Proprietário"){
+            $('#fieldUser').append(`
+
+                    <div class="col-md-6">
+                        <div class="mb-3 form-group">
+                            <label for="numero">Contacto*</label>
+                            <input type="number"    name="numero[0]" class="form-control"  required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3 form-group">
+                            <label for="id_empresa">empresa*</label>
+                            <select name="id_empresa" id="" class="form-control select2">
+                                @foreach($empresas as $empresa)
+                                    <option value="{{$empresa->id}}" >
+                                        {{$empresa->nome}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div> <!-- /.col -->
+                    <div class="col-md-4">
+                        <div class="mb-3 form-group">
+                            <label for="marca">Marca*</label>
+                            <input type="text"    name="marca"  class="form-control"  required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3 form-group">
+                            <label for="modelo">Modelo*</label>
+                            <input type="text"    name="modelo"  class="form-control"  required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3 form-group">
+                            <label for="numero">Matricula*</label>
+                            <input type="text"    name="matricula"  class="form-control"  required>
+                        </div>
+                    </div>
+            `);
+       }else if(option === "Cliente Singular"){
+            $('#fieldUser').append(`
+
+                <div class="col-md-4">
+                    <div class="mb-3 form-group">
+                        <label for="numero">Contacto*</label>
+                        <input type="number"    name="numero[0]" class="form-control"  required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3 form-group">
+                        <label for="numero">Contacto2*</label>
+                        <input type="number"    name="numero[1]" class="form-control"  >
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3 form-group">
+                        <label for="numero">Contacto3*</label>
+                        <input type="number"    name="numero[2]" class="form-control"  >
+                    </div>
+                </div>
+            `);
+
+       }else{
+        $('#fieldUser').html('');
+       }
+    }
+    function addFieldUserUpdate(id){
+       let option =  $('#nivel'+id).val();
+
+       if(option === "Funcionário"){
+            $('#fieldUser'+id).append(`
+                <div class="col-md-12">
+                    <div class="mb-3 form-group">
+                        <label for="id_empresa">empresa*</label>
+                        <select name="id_empresa" id="" class="form-control select2">
+                            @foreach($empresas as $empresa)
+                                <option value="{{$empresa->id}}" >
+                                    {{$empresa->nome}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div> <!-- /.col -->
+            `);
+       }else if(option === "Proprietário"){
+            $('#fieldUser'+id).append(`
+
+                    <div class="col-md-4">
+                        <div class="mb-3 form-group">
+                            <label for="numero">Contacto*</label>
+                            <input type="number"    name="numero[0]" class="form-control"  required>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3 form-group">
+                            <label for="id_empresa">empresa*</label>
+                            <select name="id_empresa" id="" class="form-control select2">
+                                @foreach($empresas as $empresa)
+                                    <option value="{{$empresa->id}}" >
+                                        {{$empresa->nome}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div> <!-- /.col -->
+            `);
+       }else if(option === "Cliente Singular"){
+            $('#fieldUser'+id).append(`
+
+                <div class="col-md-4">
+                    <div class="mb-3 form-group">
+                        <label for="numero">Contacto*</label>
+                        <input type="number"    name="numero[0]" class="form-control"  required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3 form-group">
+                        <label for="numero">Contacto2*</label>
+                        <input type="number"    name="numero[1]" class="form-control"  required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3 form-group">
+                        <label for="numero">Contacto3*</label>
+                        <input type="number"    name="numero[2]" class="form-control"  required>
+                    </div>
+                </div>
+            `);
+
+       }else{
+        $('#fieldUser'+id).html('');
+       }
+    }
+</script>
 {{-- ModalCreate --}}
 @if (session('user.destroy.success'))
     <script>

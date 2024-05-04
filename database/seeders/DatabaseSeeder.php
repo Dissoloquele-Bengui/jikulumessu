@@ -24,9 +24,10 @@ class DatabaseSeeder extends Seeder
             'email'=>"Admnistrador@disso.com",
             'password'=>Hash::make("12345678"),
             'nivel'=>"Administrador",
+            'genero'=>"Masculino"
         ]);
         for($contador=1; $contador<101;$contador++){
-            \App\Models\Epoca::create([
+            \App\Models\Empresa::create([
                 'nome'=>$contador,
             ]);
         }
@@ -39,9 +40,9 @@ class DatabaseSeeder extends Seeder
             'Final'
         ];
 
-        // Loop para criar instâncias de Epoca para cada fase
+        // Loop para criar instâncias de Empresa para cada fase
         foreach ($fases as $nomeFase) {
-            \App\Models\Epoca::create([
+            \App\Models\Empresa::create([
                 'nome' => $nomeFase,
             ]);
         }

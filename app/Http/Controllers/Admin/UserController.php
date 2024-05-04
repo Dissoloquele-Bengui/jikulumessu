@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CarroUsuario;
+use App\Models\Contacto;
+use App\Models\Coordenadas;
+use App\Models\Empresa;
+use App\Models\EmpresaUsuario;
 use App\Models\Gestor;
 use App\Models\Hospital;
 use App\Models\Logger;
@@ -32,15 +37,130 @@ class UserController extends Controller
 
     public function index(){
 
-            $data['usuarios'] = User::all();
-        if(Auth::user()->nivel == "Admin de Campeonato"){
-            $data['usuarios'] = User::where('id',Auth::user()->id)
+            $data['usuarios'] = User::leftJoin('empresa_usuarios','users.id','empresa_usuarios.id_user')
+                ->leftJoin('carro_usuarios','carro_usuarios.id_user','users.id')
+                ->leftJoin('empresas','empresa_usuarios.id_empresa','empresas.id')
+                ->select('users.*','carro_usuarios.marca as marca','carro_usuarios.modelo as modelo','carro_usuarios.matricula as matricula','empresas.id as id_empresa')
                 ->get();
+            $data['empresas'] = Empresa::all();
 
-        }
         $this->loggerData("Listou Usuários");
 
         return view('admin.usuario.index', $data);
+
+    }
+    public function funcionario(){
+        $empresa_user_id = EmpresaUsuario::where('id_user',Auth::id())->first()
+        ->id_empresa;
+        $data['funcionario_view']=true;
+        $data['usuarios'] = User::leftJoin('empresa_usuarios','users.id','empresa_usuarios.id_user')
+            ->leftJoin('carro_usuarios','carro_usuarios.id_user','users.id')
+            ->leftJoin('empresas','empresa_usuarios.id_empresa','empresas.id')
+            ->select('users.*','carro_usuarios.marca as marca','carro_usuarios.modelo as modelo','carro_usuarios.matricula as matricula','empresas.id as id_empresa')
+            ->where('nivel',"Funcionário")
+            ->where('id_empresa',$empresa_user_id)
+            ->get();
+
+        $data['empresas'] = Empresa::where('id',$empresa_user_id)->get();
+
+        $this->loggerData("Listou Funcionários");
+
+        return view('admin.usuario.funcionario', $data);
+
+    }
+
+    public function contactos($id, $password){
+        // Recupere a senha não criptografada da URL
+        $senhaNaoCriptografada = $password;
+
+        // Recupere o usuário da base de dados (você pode ajustar isso de acordo com sua lógica)
+        $usuario = User::findOrFail($id);
+
+        // Verifique se o usuário e a senha existem
+        if ($usuario && Hash::check($senhaNaoCriptografada, $usuario->password)) {
+            //dd($id);
+            return response()->json(['contact'=>contacto($id)], 200);
+        } else {
+            // Senha não corresponde
+            return response()->json("Senha inválida!", 200);
+
+        }
+
+    }
+    public function updateLocalizar($id, $password,$latitude, $longitude, $velocidade){
+        // Recupere a senha não criptografada da URL
+        $senhaNaoCriptografada = $password;
+
+        // Recupere o usuário da base de dados (você pode ajustar isso de acordo com sua lógica)
+        $usuario = User::findOrFail($id);
+
+        // Verifique se o usuário e a senha existem
+        if ($usuario && Hash::check($senhaNaoCriptografada, $usuario->password)) {
+            //dd($id);
+            if(!Coordenadas::where('id_user',$id)->exists()){
+                Coordenadas::create([
+                    'id_user'=>$id,
+                    'latitude'=>$latitude,
+                    'longitude'=>$longitude,
+                    'velocidade'=>$velocidade,
+                ]);
+            }else{
+                Coordenadas::where('id_user',$id)->update([
+                    'id_user'=>$id,
+                    'latitude'=>$latitude,
+                    'longitude'=>$longitude,
+                    'velocidade'=>$velocidade,
+                ]);
+            }
+            return response()->json("Coordenadas Actualizadas Com Sucesso", 200);
+        } else {
+            // Senha não corresponde
+            return response()->json("Senha inválida!", 200);
+
+        }
+
+    }
+    public function localizar($id){
+        $data['coordenadas']=Coordenadas::where('id_user',$id)->get();
+
+        return view('admin.user.localizar',$data);
+    }
+
+    public function getLocalizacao($id){
+        return response()->json(["individuo"=>Coordenadas::where('id_user',$id)->first()], 200);
+    }
+    public function proprietario(){
+        $data['proprietario_view']=true;
+        $empresa_user_id = EmpresaUsuario::where('id_user',Auth::id())->first()
+        ->id_empresa;
+        $data['usuarios'] = User::leftJoin('empresa_usuarios','users.id','empresa_usuarios.id_user')
+            ->leftJoin('carro_usuarios','carro_usuarios.id_user','users.id')
+            ->leftJoin('empresas','empresa_usuarios.id_empresa','empresas.id')
+            ->select('users.*','carro_usuarios.marca as marca','carro_usuarios.modelo as modelo','carro_usuarios.matricula as matricula','empresas.id as id_empresa')
+            ->where('nivel',"Proprietário")
+            //->where('id_empresa',$empresa_user_id)
+            ->get();
+
+        $data['empresas'] = Empresa::where('id',$empresa_user_id)->get();
+        //dd($data['usuarios']);
+        $this->loggerData("Listou Proprietários");
+
+        return view('admin.usuario.proprietario', $data);
+
+    }
+    public function cliente(){
+
+        $data['usuarios'] = User::leftJoin('empresa_usuarios','users.id','empresa_usuarios.id_user')
+            ->leftJoin('carro_usuarios','carro_usuarios.id_user','users.id')
+            ->leftJoin('empresas','empresa_usuarios.id_empresa','empresas.id')
+            ->select('users.*','carro_usuarios.marca as marca','carro_usuarios.modelo as modelo','carro_usuarios.matricula as matricula','empresas.id as id_empresa')
+            ->where('nivel',"Cliente Singular")
+            ->get();
+        $data['cliente_view']=true;
+        $data['empresas'] = Empresa::all();
+        $this->loggerData("Listou Proprietários");
+
+        return view('admin.usuario.proprietario', $data);
 
     }
     public function create(){
@@ -72,8 +192,39 @@ class UserController extends Controller
                 'email'=>$request->email,
                 'nivel'=>$request->tipo,
                 'password'=>Hash::make($request->password),
+                'genero'=>$request->genero
 
             ]);
+
+            if($request->tipo == "Proprietário"){
+                EmpresaUsuario::create([
+                    'id_empresa'=>$request->id_empresa,
+                    'id_user'=>$usuario->id
+                ]);
+                Contacto::create([
+                    'numero'=>$request->numero[0],
+                    'id_user'=>$usuario->id
+                ]);
+                CarroUsuario::create([
+                    'id_user'=>$usuario->id,
+                    'marca'=>$request->marca,
+                    'matricula'=>$request->matricula,
+                    'modelo'=>$request->modelo
+                ]);
+            }else if($request->tipo == "Funcionário"){
+                EmpresaUsuario::create([
+                    'id_empresa'=>$request->id_empresa,
+                    'id_user'=>$usuario->id
+                ]);
+
+            }else if($request->tipo == "Cliente Singular"){
+                foreach($request->numero as $numero){
+                    Contacto::create([
+                        'numero'=>$numero,
+                        'id_user'=>$usuario->id
+                    ]);
+                }
+            }
 
             $this->loggerData(" Cadastrou o usuario " . $request->name);
 
@@ -81,7 +232,7 @@ class UserController extends Controller
 
         } catch (\Throwable $th) {
             throw $th;
-            //dd($th);
+            dd($th);
             return redirect()->back()->with('user.create.error',1);
         }
 
@@ -142,30 +293,16 @@ class UserController extends Controller
                 'email'=>$request->email,
                 'nivel'=>$request->tipo,
                 'password'=>Hash::make($request->password),//Criptografando a senha em laravel
-                'morada'=>$request->morada,
-                'nif'=>$request->nif
+
 
             ]);
-            if($request->tipo=="Paciente"){
-                Paciente::where('user_id',$id)->create([
-                    'data_nasc'=>$request->data_nasc,
-                    'contacto'=>$request->contacto
-                ]);
-            }else if($request->tipo =="Medico"){
-                Medico::where('user_id',$id)->create([
-                    'especializacao'=>$request->especializacao,
-                    'hospital_id'=>$request->hospital_id
-                ]);
-            }
-            //dd($request->id_restaurante);
-
-            //dd(Gestor::all());
             $this->loggerData("Editou o usuario que possui o id $usuario->id ");
 
             return redirect()->back()->with('user.update.success',1);
 
         } catch (\Throwable $th) {
-
+            throw $th;
+            dd($th);
             return redirect()->back()->with('user.update.error',1);
         }
     }

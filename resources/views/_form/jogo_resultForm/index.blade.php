@@ -2,7 +2,7 @@
     <div class="col-md-6">
         <div class="mb-3 form-group">
             <label for="Gol">Gols dos(as) {{$equipas
-                ->where('id',$jogo->id_campeonato_equipa_1)
+                ->where('id',$jogo->id_carro_equipa_1)
                 ->first()
                 ->equipa}}*</label>
             <input type="number"  value="{{isset($jogo) ?$jogo->gols_1: old('gol_1') }}"  name="gol_1" class="form-control"  required>
@@ -11,7 +11,7 @@
     <div class="col-md-6">
         <div class="mb-3 form-group">
             <label for="Gol">Gols dos(as) {{$equipas
-                ->where('id',$jogo->id_campeonato_equipa_2)
+                ->where('id',$jogo->id_carro_equipa_2)
                 ->first()
                 ->equipa}}*</label>
             <input type="number"  value="{{isset($jogo) ?$jogo->gols_2: old('gol_2') }}"  name="gol_2" class="form-control"  required>

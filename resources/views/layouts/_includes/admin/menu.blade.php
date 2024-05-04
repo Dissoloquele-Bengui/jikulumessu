@@ -16,7 +16,7 @@
           </span>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-            <a class="pl-3 dropdown-item" href="{{ route('sgcf.site.index') }}">
+            <a class="pl-3 dropdown-item" href="">
                 <span class="ml-1 item-text" >Voltar Para o Site</span>
             </a>
           <form action="{{ route('logout') }}" method="POST">
@@ -38,63 +38,51 @@
 
         <div class="mb-4 w-100 d-flex">
             <a class="mx-auto mt-2 text-center navbar-brand flex-fill" href="/dashboard">
-                <img class="imiage_de_menu" id="menuImage" src="" style="height:90px" alt="">
-
             </a>
         </div>
         <ul class="mb-2 navbar-nav flex-fill w-100">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.user.index') }}">
-                <i class="fe fe-user"></i>
-                <span class="ml-3 item-text">Usuário</span>
-            </a>
-        </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.campeonato_equipa.index') }}">
-            <i class="fe fe-shield"></i>
-            <span class="ml-3 item-text">Equipa/Campeonato</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.jogo.index') }}">
-            <i class="fe fe-play"></i>
-            <span class="ml-3 item-text">Jogo</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.epoca.index') }}">
-            <i class="fe fe-calendar"></i>
-            <span class="ml-3 item-text">Jornada</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.campeonato.index') }}">
-            <i class="fe fe-award"></i>
-            <span class="ml-3 item-text">Campeonato</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.equipa.index') }}">
-            <i class="fe fe-users"></i>
-            <span class="ml-3 item-text">Equipa</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.jogador.index') }}">
-            <i class="fe fe-user-plus"></i>
-            <span class="ml-3 item-text">Jogador</span>
-        </a>
-    </li>
 
-    @if (Auth::user()->nivel=="Administrador")
-        <li class="nav-item">
-            <a class="pl-3 nav-link" href="{{ route('admin.logs.index') }}">
-                <i class="fe fe-activity"></i>
-                <span class="ml-1 item-text">Atividades</span>
-            </a>
-        </li>
-    @endif
-</ul>
+            @if (Auth::user()->nivel=="Funcionário")
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.user.funcionario') }}">
+                        <i class="fe fe-user"></i>
+                        <span class="ml-3 item-text">Funcionário</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.user.proprietario') }}">
+                        <i class="fe fe-user"></i>
+                        <span class="ml-3 item-text">Cliente</span>
+                    </a>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.user.index') }}">
+                        <i class="fe fe-user"></i>
+                        <span class="ml-3 item-text">Usuário</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.user.cliente') }}">
+                        <i class="fe fe-user"></i>
+                        <span class="ml-3 item-text">Cliente</span>
+                    </a>
+                </li>
+            @endif
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.empresa.index') }}">
+                    <i class="fe fe-calendar"></i>
+                    <span class="ml-3 item-text">Empresa</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.carro.index') }}">
+                    <i class="fe fe-calendar"></i>
+                    <span class="ml-3 item-text">Carro</span>
+                </a>
+            </li>
+        </ul>
 
 
 
