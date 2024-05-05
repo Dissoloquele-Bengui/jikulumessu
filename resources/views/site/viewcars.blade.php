@@ -97,6 +97,7 @@
                     var minhaLongitude = position.coords.longitude;
 
                     pessoaMarker = L.marker([minhaLatitude, minhaLongitude]).addTo(mapa);
+                    pessoaMarker.bindTooltip('EU').openTooltip(); // Adicionar label "EU" ao marcador da pessoa
 
                     mapa.setView([minhaLatitude, minhaLongitude], 11); // Definir a visão para a posição da pessoa
 
@@ -106,6 +107,7 @@
                     var carroLongitude = parseFloat(carro.longitude);
 
                     carroMarker = L.marker([carroLatitude, carroLongitude]).addTo(mapa);
+                    carroMarker.bindTooltip('Veiculo').openTooltip(); // Adicionar label "Veiculo" ao marcador do carro
 
                     // Roteamento da pessoa ao carro
                     linhaRota =  L.Routing.control({
@@ -158,9 +160,7 @@
                                 console.log(error);
                             }
                         });
-
-
-                    }, 10000);
+                    }, 180000);
 
                 }, function(error) {
                     console.error("Erro ao obter a localização:", error);
@@ -170,5 +170,6 @@
             }
         }
     </script>
+
 </body>
 </html>

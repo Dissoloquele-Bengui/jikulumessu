@@ -20,9 +20,10 @@ Route::get('/', function(){
 Route::prefix('/api/carro')->group(function () {
     //Rota de listar
 
-    Route::get('/updateLocalizar/{id}/{latitude}/{longitude}', ['as' => 'admin.carro.updateLocalizar', 'uses' => 'Admin\CarroController@updateLocalizar']);
+    Route::get('/updateLocalizar/{id}/{password}/{latitude}/{longitude}', ['as' => 'admin.carro.updateLocalizar', 'uses' => 'Admin\CarroController@updateLocalizar']);
 
     Route::get('/localizar/{id}', ['as' => 'admin.carro.localizar', 'uses' => 'Admin\CarroController@localizar']);
+
     Route::get('/getLocalizacao/{id}', ['as' => 'admin.carro.getLocalizacao', 'uses' => 'Admin\CarroController@getLocalizacao']);
 
 });
@@ -39,6 +40,7 @@ Route::prefix('/api/people')->group(function () {
 
 
 });
+//Recupera o email do usuário para que ele possa logar com o id
 Route::get('getEmail', ['as' => 'admin.user.getEmail', 'uses' => 'Site\UserController@getEmail']);
 Route::prefix('sgv/site')->group(function () {
     //Rota de listar

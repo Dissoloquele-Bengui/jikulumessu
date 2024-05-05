@@ -8,6 +8,7 @@ use App\Models\CarroUsuario;
 use App\Models\Empresa;
 use App\Models\Logger;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class CarroController extends Controller
 {
@@ -142,20 +143,33 @@ class CarroController extends Controller
      public function getLocalizacao($id){
         return response()->json(['carro'=>CarroUsuario::where('id_user',$id)->first()], 200);
     }
-     public function updateLocalizar(int $id, $latitude, $longitude)
+     public function updateLocalizar(int $id, $password,$latitude, $longitude)
      {
-          try {
+        try {
              //code...
-             $carro = CarroUsuario::find($id);
+            // $carro = CarroUsuario::find($id);
+            //dd(User::find($id));
+            // Recupere a senha não criptografada da URL
+            $senhaNaoCriptografada = $password;
 
-             $c =CarroUsuario::findOrFail($id)->update([
-                'latitude'=>$latitude,
-                'longitude'=>$longitude,
-             ]);
-             return response()->json("Coordenadas actualizadas com sucesso!", 200);
-          } catch (\Throwable $th) {
-             return redirect()->back()->with('carro.update.error',1);
-          }
+            // Recupere o usuário da base de dados (você pode ajustar isso de acordo com sua lógica)
+            $usuario = User::findOrFail($id);
+
+            // Verifique se o usuário e a senha existem
+            if ($usuario && Hash::check($senhaNaoCriptografada, $usuario->password)) {
+                $c =CarroUsuario::where('id_user',$id)->update([
+                    'latitude'=>$latitude,
+                    'longitude'=>$longitude,
+                ]);
+                return response()->json("Coordenadas actualizadas com sucesso!", 200);
+
+            }else{
+                return response()->json("Coordenadas não foram actualizadas!", 200);
+
+            }
+        } catch (\Throwable $th) {
+            return response()->json("Coordenadas não foram actualizadas!", 200);
+        }
      }
      public function localizar($id){
         $data['carro']=CarroUsuario::find($id);

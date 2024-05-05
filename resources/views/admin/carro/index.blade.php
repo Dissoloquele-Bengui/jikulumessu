@@ -50,7 +50,7 @@
                                     <span class="sr-only text-muted">Action</span>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalEdit{{$carro->id}}">{{ __('Editar') }}</a>
+                                        {{--<a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalEdit{{$carro->id}}">{{ __('Editar') }}</a>--}}
                                         <a class="dropdown-item" href="{{route('admin.carro.destroy',['id'=>$carro->id])}}">{{ __('Remover') }}</a>
                                         <a class="dropdown-item" href="{{route('admin.carro.purge',['id'=>$carro->id])}}">{{ __('Purgar') }}</a>
                                     </div>

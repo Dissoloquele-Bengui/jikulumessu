@@ -50,7 +50,9 @@ class SiteController extends Controller
             $data['carro']=CarroUsuario::where('id_user',Auth::id())->first();
             return view('site.viewcars',$data);
         }else{
-            $data['individuo']=Coordenadas::where('id_user',Auth::id())->first();
+            $data['individuo']=Coordenadas::join('users','users.id','coordenadas.id_user')
+                ->select('coordenadas.*','users.name as nome')
+                ->where('id_user',Auth::id())->first();
             return view('site.viewpeople',$data);
         }
     }

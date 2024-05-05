@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Localizar Indiciduos </title>
+    <title> Localizar Individuos </title>
     <link rel="stylesheet" href="visualization/viewpeople.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
@@ -99,7 +99,7 @@
                     var minhaLongitude = position.coords.longitude;
 
                     pessoaMarker = L.marker([minhaLatitude, minhaLongitude]).addTo(mapa);
-
+                    pessoaMarker.bindTooltip('EU').openTooltip(); // Adicionar label "EU" ao
                     mapa.setView([minhaLatitude, minhaLongitude], 11); // Definir a visão para a posição da pessoa
 
                     // Obter a posição inicial do indivíduo
@@ -107,9 +107,9 @@
                     console.log(individuo);
                     var individuoLatitude = parseFloat(individuo.latitude);
                     var individuoLongitude = parseFloat(individuo.longitude);
-
+                    var individuoNome = individuo.nome;
                     individuoMarker = L.marker([individuoLatitude, individuoLongitude]).addTo(mapa);
-
+                    individuoMarker.bindTooltip(individuoNome).openTooltip(); // Adicionar label "EU" ao
                     // Roteamento da pessoa ao indivíduo
                     linhaRota =  L.Routing.control({
                         waypoints: [

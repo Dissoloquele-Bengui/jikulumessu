@@ -58,19 +58,19 @@
             <div class="col-md-4">
                 <div class="mb-3 form-group">
                     <label for="numero">Contacto*</label>
-                    <input type="number"    name="numero[0]" value="{{contacto($user->id)[0]}}" class="form-control"  required>
+                    <input type="number"    name="numero[0]" value="{{contato($user->id)[0]}}" class="form-control"  required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-3 form-group">
                     <label for="numero">Contacto 2*</label>
-                    <input type="number"    name="numero[1]" value="{{contacto($user->id)[1]}}" class="form-control"  required>
+                    <input type="number"    name="numero[1]" value="{{contato($user->id)[1]}}" class="form-control"  required>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="mb-3 form-group">
                     <label for="numero">Contacto 3*</label>
-                    <input type="number"    name="numero[2]" value="{{contacto($user->id)[2]}}" class="form-control"  required>
+                    <input type="number"    name="numero[2]" value="{{contato($user->id)[2]}}" class="form-control"  required>
                 </div>
             </div>
         @endif
@@ -78,7 +78,7 @@
             <div class="col-md-6">
                 <div class="mb-3 form-group">
                     <label for="numero">Contacto*</label>
-                    <input type="number"    name="numero[0]" value="{{contacto($user->id)[0]}}" class="form-control"  required>
+                    <input type="number"    name="numero[0]" value="{{contato($user->id)[0]}}" class="form-control"  required>
                 </div>
             </div>
 

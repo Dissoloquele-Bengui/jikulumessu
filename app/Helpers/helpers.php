@@ -75,6 +75,11 @@ function minhasNotificacoes(){
     return isset($data)?$data:[];
 }
 function contacto($id){
+    return [Contacto::where('id_user',$id)
+        ->pluck('numero')
+        ->toArray(),User::findOrFail($id)->name];
+}
+function contato($id){
     return Contacto::where('id_user',$id)
         ->pluck('numero')
         ->toArray();
